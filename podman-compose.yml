@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  frontend:
+    build: .
+    container_name: groovelab-frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+  backend:
+    build: ./backend
+    container_name: groovelab-backend
+    ports:
+      - "5000:5000"
+    environment:
+      - SPOTIFY_CLIENT_ID=${SPOTIFY_CLIENT_ID}
+      - SPOTIFY_CLIENT_SECRET=${SPOTIFY_CLIENT_SECRET}
