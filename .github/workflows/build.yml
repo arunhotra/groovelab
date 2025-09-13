@@ -21,7 +21,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # Build and push backend
+      
       - name: Build and Push Backend
         run: |
           IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/groovelab-backend
@@ -31,7 +31,7 @@ jobs:
           docker tag $IMAGE:$TAG $IMAGE:latest
           docker push $IMAGE:latest
 
-      # Build and push frontend
+      
       - name: Build and Push Frontend
         run: |
           IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/groovelab-frontend
