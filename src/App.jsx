@@ -57,7 +57,8 @@ function PlaylistGenerator() {
     setError(null);
 
     try {
-      const response = await fetch("http://localhost:5000/playlist", {
+      const API_BASE = import.meta.env.VITE_API_BASE || "/api";
+      const response = await fetch(`${API_BASE}/playlist`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

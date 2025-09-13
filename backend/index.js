@@ -34,7 +34,7 @@ app.use((req, res, next) => {
 });
 
 
-app.post("/playlist", async (req, res) => {
+app.post("/api/playlist", async (req, res) => {
   try {
     const { mood } = req.body;
     const token = await getAccessToken();

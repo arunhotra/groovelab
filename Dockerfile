@@ -1,32 +1,19 @@
+# Build stage
 FROM node:20 AS builder
-
 WORKDIR /app
 
-# Copy only package files first
+# Copy package files and install
 COPY package*.json ./
-
-# Install deps (including router)
-RUN npm install react-router-dom
-
-# Install everything else
 RUN npm install
 
-# Copy rest of the code
+# Copy rest of source and build
 COPY . .
-
-# Build the app
 RUN npm run build
 
-# Runtime image
-FROM node:20-slim AS runner
-WORKDIR /app
+# Serve with Nginx
+FROM nginx:alpine AS runner
+COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Copy only the dist folder from builder
-COPY --from=builder /app/dist ./dist
-
-# Use a lightweight web server to serve the files
-RUN npm install -g serve
-
-EXPOSE 5173
-
-CMD ["serve", "-s", "dist", "-l", "5173"]
+# Expose HTTP
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
