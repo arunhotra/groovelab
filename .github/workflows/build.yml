@@ -1,0 +1,42 @@
+name: Build and Push
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/**'
+      - 'frontend/**'
+      - '.github/workflows/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Log in to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # Build and push backend
+      - name: Build and Push Backend
+        run: |
+          IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/groovelab-backend
+          TAG=${{ github.sha }}
+          docker build -t $IMAGE:$TAG ./backend
+          docker push $IMAGE:$TAG
+          docker tag $IMAGE:$TAG $IMAGE:latest
+          docker push $IMAGE:latest
+
+      # Build and push frontend
+      - name: Build and Push Frontend
+        run: |
+          IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/groovelab-frontend
+          TAG=${{ github.sha }}
+          docker build -t $IMAGE:$TAG ./frontend
+          docker push $IMAGE:$TAG
+          docker tag $IMAGE:$TAG $IMAGE:latest
+          docker push $IMAGE:latest
