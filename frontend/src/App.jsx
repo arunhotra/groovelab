@@ -86,9 +86,9 @@ function PlaylistGenerator() {
   const [mood, setMood] = React.useState("");
   const [playlists, setPlaylists] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState<string | null>(null);
+  const [error, setError] = React.useState(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
@@ -135,7 +135,7 @@ function PlaylistGenerator() {
         {error && <p className="text-red-600">{error}</p>}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {playlists.map((p: any) => (
+          {playlists.map((p) => (
             <motion.div
               key={p.id}
               whileHover={{ scale: 1.03 }}
