@@ -29,26 +29,26 @@ function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-black text-white flex items-center justify-center px-6">
-      <div className="flex flex-col md:flex-row items-center gap-12 max-w-7xl w-full">
+      <div className="flex flex-col md:flex-row items-center md:items-start gap-12 max-w-6xl w-full">
         
         {/* Left: logo */}
         <motion.img
           src="/groovelab-logo.png"
           alt="GrooveLab"
-          className="w-32 h-32 object-contain drop-shadow-xl"
+          className="w-32 h-32 max-w-[8rem] max-h-[8rem] object-contain drop-shadow-xl"
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
         />
 
-        {/* Right: title, copy, features */}
+        {/* Right: text + features */}
         <motion.div
-          className="flex flex-col gap-8 text-center md:text-right"
+          className="flex-1 flex flex-col gap-8 text-left"
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <h1 className="text-5xl font-extrabold bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent">
+          <h1 className="text-4xl font-extrabold bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent">
             GrooveLab
           </h1>
           <p className="text-lg text-gray-300 max-w-xl">
@@ -81,6 +81,7 @@ function Home() {
     </div>
   );
 }
+
 
 
 /* ---------- Playlist Generator (form + results) ---------- */
