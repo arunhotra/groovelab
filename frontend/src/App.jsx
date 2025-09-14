@@ -1,11 +1,10 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { Music, Brain, Activity } from "lucide-react";
 
-// --- Home (Landing Page) ---
+/* ---------- Home (side-by-side hero) ---------- */
 function Home() {
   const features = [
     {
@@ -31,7 +30,7 @@ function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-black text-white flex items-center justify-center px-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center max-w-7xl w-full">
-        {/* Left side - Logo */}
+        {/* Left: logo */}
         <motion.img
           src="/groovelab-logo.png"
           alt="GrooveLab"
@@ -41,7 +40,7 @@ function Home() {
           transition={{ duration: 0.8 }}
         />
 
-        {/* Right side - Text + Features */}
+        {/* Right: title, copy, features */}
         <motion.div
           className="flex flex-col gap-8"
           initial={{ opacity: 0, x: 50 }}
@@ -82,14 +81,106 @@ function Home() {
   );
 }
 
-// --- Placeholder pages ---
+/* ---------- Playlist Generator (form + results) ---------- */
 function PlaylistGenerator() {
+  const [mood, setMood] = React.useState("");
+  const [playlists, setPlaylists] = React.useState([]);
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    try {
+      const API_BASE = import.meta.env.VITE_API_BASE || "/api";
+      const res = await fetch(`${API_BASE}/playlist`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
+        body: JSON.stringify({ mood }),
+      });
+      if (!res.ok) throw new Error("Failed to fetch playlists");
+      const data = await res.json();
+      setPlaylists(Array.isArray(data) ? data.filter(Boolean) : []);
+    } catch (err) {
+      console.error(err);
+      setError("Something went wrong while fetching playlists.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <h2 className="text-3xl font-bold">Playlist Generator</h2>
+    <div className="min-h-screen bg-gradient-to-br from-gray-100 via-gray-50 to-white p-8">
+      <div className="max-w-5xl mx-auto">
+        <h2 className="text-4xl font-extrabold mb-8 text-indigo-700">
+          🎶 Mood-Based Playlist Generator
+        </h2>
+
+        <form onSubmit={handleSubmit} className="mb-8 flex gap-3">
+          <input
+            type="text"
+            value={mood}
+            onChange={(e) => setMood(e.target.value)}
+            placeholder="Enter a vibe (e.g. sunset drive, chill focus)"
+            className="flex-1 border rounded-lg px-4 py-2 shadow-sm"
+          />
+          <button className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 shadow">
+            Search
+          </button>
+        </form>
+
+        {loading && <p className="text-gray-600">Loading playlists...</p>}
+        {error && <p className="text-red-600">{error}</p>}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {playlists.map((p: any) => (
+            <motion.div
+              key={p.id}
+              whileHover={{ scale: 1.03 }}
+              className="rounded-xl shadow-lg bg-white overflow-hidden"
+            >
+              <div className="relative group h-60">
+                {p.images?.[0]?.url && (
+                  <img
+                    src={p.images[0].url}
+                    alt={p.name}
+                    className="w-full h-full object-cover"
+                  />
+                )}
+                <a
+                  href={p.external_urls?.spotify}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition"
+                >
+                  <span className="bg-green-500 text-white px-5 py-2 rounded-full shadow-lg">
+                    ▶ Play on Spotify
+                  </span>
+                </a>
+              </div>
+              <div className="p-5">
+                <h3 className="font-bold text-lg">{p.name}</h3>
+                <p className="text-sm text-gray-600">
+                  By {p.owner?.display_name || "Unknown"}
+                </p>
+                {p.tracks?.total ? (
+                  <p className="text-xs text-gray-500 mt-1">{p.tracks.total} tracks</p>
+                ) : null}
+                {p.description ? (
+                  <p className="text-sm text-gray-700 mt-2 line-clamp-2">{p.description}</p>
+                ) : null}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
+
+/* ---------- Placeholder pages ---------- */
 function SongAnalyzer() {
   return (
     <div className="flex items-center justify-center min-h-screen">
@@ -105,7 +196,7 @@ function DanceVisualizer() {
   );
 }
 
-// --- App Router ---
+/* ---------- App Router ---------- */
 export default function App() {
   return (
     <Router>
