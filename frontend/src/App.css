@@ -1,42 +1,102 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+body {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  background: linear-gradient(135deg, #0f0f0f, #1b003a, #002f6c);
+  color: #fff;
+  min-height: 100vh;
+}
+
+.hero {
   text-align: center;
+  padding: 2rem 1rem;
 }
 
 .logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+  width: 120px;
+  margin-bottom: 1rem;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.tagline {
+  font-size: 1.2rem;
+  color: #a0a0a0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin: 2rem auto;
+  gap: 0.5rem;
 }
 
-.card {
-  padding: 2em;
+.search-container input {
+  padding: 0.75rem 1rem;
+  border-radius: 25px;
+  border: none;
+  width: 300px;
+  font-size: 1rem;
 }
 
-.read-the-docs {
-  color: #888;
+.search-container button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 25px;
+  background: linear-gradient(90deg, #ff0080, #7928ca);
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.search-container button:hover {
+  transform: scale(1.05);
+}
+
+.results {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.playlist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.playlist-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  padding: 1rem;
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.playlist-card:hover {
+  transform: translateY(-5px);
+}
+
+.playlist-card img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.playlist-card h3 {
+  margin: 0.75rem 0;
+  font-size: 1.1rem;
+}
+
+.playlist-card p {
+  font-size: 0.9rem;
+  color: #aaa;
+  height: 40px;
+  overflow: hidden;
+}
+
+.playlist-card a {
+  display: inline-block;
+  margin-top: 0.5rem;
+  text-decoration: none;
+  color: #1db954; /* Spotify green */
+  font-weight: bold;
 }
