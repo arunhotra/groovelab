@@ -32,24 +32,29 @@ function Home() {
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-black text-white flex flex-col">
       {/* Hero section */}
       <motion.div
-        className="text-center py-20 px-6"
+        className="flex flex-col md:flex-row items-center justify-center gap-10 py-20 px-6"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
       >
+        {/* Logo */}
         <motion.img
           src="/groovelab-logo.png"
           alt="GrooveLab"
-          className="mx-auto w-28 h-28 mb-8 drop-shadow-lg"
+          className="w-28 h-28 drop-shadow-lg"
           whileHover={{ scale: 1.1 }}
         />
-        <h1 className="text-6xl font-extrabold mb-6 bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent">
-          GrooveLab
-        </h1>
-        <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-          Discover playlists, analyze songs, and get AI-powered dance routines —
-          all in one creative lab for music and movement.
-        </p>
+
+        {/* Text content */}
+        <div className="text-center md:text-left max-w-2xl">
+          <h1 className="text-6xl font-extrabold mb-6 bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent">
+            GrooveLab
+          </h1>
+          <p className="text-lg text-gray-300">
+            Discover playlists, analyze songs, and get AI-powered dance routines —
+            all in one creative lab for music and movement.
+          </p>
+        </div>
       </motion.div>
 
       {/* Features grid */}
