@@ -29,7 +29,7 @@ function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-black text-white flex items-center justify-center px-6">
-      <div className="flex flex-col md:flex-row items-center md:items-start gap-12 max-w-6xl w-full">
+      <div className="flex flex-col md:flex-row items-center md:items-center gap-12 max-w-6xl w-full">
         
         {/* Left: logo */}
         <motion.img
@@ -43,7 +43,7 @@ function Home() {
 
         {/* Right: text + features */}
         <motion.div
-          className="flex-1 flex flex-col gap-8 text-left"
+          className="flex-1 flex flex-col gap-8 text-left justify-center"
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
