@@ -28,58 +28,59 @@ function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-black text-white flex items-center justify-center px-6">
-      <div className="flex flex-col md:flex-row items-center md:items-center gap-12 max-w-6xl w-full">
-        
-        {/* Left: logo */}
-        <motion.img
-          src="/groovelab-logo.png"
-          alt="GrooveLab"
-          className="w-32 h-32 max-w-[8rem] max-h-[8rem] object-contain drop-shadow-xl"
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
-        />
+  <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-black text-white flex items-center justify-center px-6">
+    <div className="flex flex-col md:flex-row items-center justify-center gap-12 max-w-6xl w-full">
+      
+      {/* Left: logo */}
+      <motion.img
+        src="/groovelab-logo.png"
+        alt="GrooveLab"
+        className="w-28 h-28 object-contain drop-shadow-xl"
+        initial={{ opacity: 0, x: -50 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.8 }}
+      />
 
-        {/* Right: text + features */}
-        <motion.div
-          className="flex-1 flex flex-col gap-8 text-left justify-center"
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <h1 className="text-4xl font-extrabold bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent">
-            GrooveLab
-          </h1>
-          <p className="text-lg text-gray-300 max-w-xl">
-            Discover playlists, analyze songs, and get AI-powered dance routines —
-            all in one creative lab for music and movement.
-          </p>
+      {/* Right: text + features */}
+      <motion.div
+        className="flex-1 flex flex-col gap-8 text-left"
+        initial={{ opacity: 0, x: 50 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.8 }}
+      >
+        <h1 className="text-4xl font-extrabold bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent">
+          GrooveLab
+        </h1>
+        <p className="text-lg text-gray-300 max-w-xl">
+          Discover playlists, analyze songs, and get AI-powered dance routines —
+          all in one creative lab for music and movement.
+        </p>
 
-          <div className="flex flex-col gap-6">
-            {features.map((f, idx) => (
-              <motion.div
-                key={idx}
-                whileHover={{ scale: 1.05 }}
-                className="flex items-center gap-4 rounded-xl shadow-lg bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-700 hover:border-indigo-500 transition p-5"
-              >
-                <div>{f.icon}</div>
-                <div className="flex-1">
-                  <h2 className="text-lg font-semibold">{f.title}</h2>
-                  <p className="text-gray-400 text-sm">{f.description}</p>
-                </div>
-                <Link to={f.path}>
-                  <Button className="bg-indigo-600 hover:bg-indigo-700 text-sm">
-                    Try it
-                  </Button>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-      </div>
+        <div className="flex flex-col gap-6">
+          {features.map((f, idx) => (
+            <motion.div
+              key={idx}
+              whileHover={{ scale: 1.05 }}
+              className="flex items-center gap-4 rounded-xl shadow-lg bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-700 hover:border-indigo-500 transition p-5"
+            >
+              <div>{f.icon}</div>
+              <div className="flex-1">
+                <h2 className="text-lg font-semibold">{f.title}</h2>
+                <p className="text-gray-400 text-sm">{f.description}</p>
+              </div>
+              <Link to={f.path}>
+                <Button className="bg-indigo-600 hover:bg-indigo-700 text-sm">
+                  Try it
+                </Button>
+              </Link>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
     </div>
-  );
+  </div>
+);
+
 }
 
 
