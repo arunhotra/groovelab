@@ -44,11 +44,11 @@ jobs:
 
       - name: Update Deployment Repo
         run: |
-          git clone https://github.com/arunhotra/groovelab-deployment
+          git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/arunhotra/groovelab-deployment.git
           cd groovelab-deployment
           sed -i "s|image: .*/groovelab-backend:.*|image: arunhotra/groovelab-backend:${{ github.sha }}|" backend/backend-deployment.yaml
           sed -i "s|image: .*/groovelab-frontend:.*|image: arunhotra/groovelab-frontend:${{ github.sha }}|" frontend/frontend-deployment.yaml
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
+          git config user.name "arunhotra"
+          git config user.email "arunhotra@gmail.com"
           git commit -am "Update images to ${{ github.sha }}"
           git push

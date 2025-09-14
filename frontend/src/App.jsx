@@ -17,7 +17,7 @@ function Home() {
       path: "/analyzer",
     },
     {
-      title: "Dance Routine Visualizer",
+      title: "Dance Routine visual",
       description: "Describe a song + dance style to get suggested moves.",
       path: "/dance",
     },
