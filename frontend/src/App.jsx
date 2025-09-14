@@ -12,7 +12,7 @@ function Home() {
       path: "/playlist",
     },
     {
-      title: "AI Song Analyzer",
+      title: "Analyze songs using AI",
       description: "Upload a track to see BPM, structure, and energy curve.",
       path: "/analyzer",
     },

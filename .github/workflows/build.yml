@@ -40,3 +40,15 @@ jobs:
           docker push $IMAGE:$TAG
           docker tag $IMAGE:$TAG $IMAGE:latest
           docker push $IMAGE:latest
+
+
+      - name: Update Deployment Repo
+        run: |
+          git clone https://github.com/arunhotra/groovelab-deployment
+          cd groovelab-deployment
+          sed -i "s|image: .*/groovelab-backend:.*|image: arunhotra/groovelab-backend:${{ github.sha }}|" backend/backend-deployment.yaml
+          sed -i "s|image: .*/groovelab-frontend:.*|image: arunhotra/groovelab-frontend:${{ github.sha }}|" frontend/frontend-deployment.yaml
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git commit -am "Update images to ${{ github.sha }}"
+          git push
