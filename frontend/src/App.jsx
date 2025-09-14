@@ -29,13 +29,13 @@ function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-black text-white flex items-center justify-center px-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center max-w-7xl w-full">
+      <div className="flex flex-col md:flex-row items-center gap-12 max-w-7xl w-full">
+        
         {/* Left: logo */}
         <motion.img
           src="/groovelab-logo.png"
           alt="GrooveLab"
-          className="w-32 h-32 object-cover rounded-full mx-auto md:mx-0 drop-shadow-xl"
-          style={{ aspectRatio: "1 / 1" }}
+          className="w-32 h-32 object-contain drop-shadow-xl"
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
@@ -43,7 +43,7 @@ function Home() {
 
         {/* Right: title, copy, features */}
         <motion.div
-          className="flex flex-col gap-8"
+          className="flex flex-col gap-8 text-center md:text-left"
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
@@ -56,7 +56,7 @@ function Home() {
             all in one creative lab for music and movement.
           </p>
 
-          <div className="grid grid-cols-1 gap-6">
+          <div className="flex flex-col gap-6">
             {features.map((f, idx) => (
               <motion.div
                 key={idx}
@@ -81,6 +81,7 @@ function Home() {
     </div>
   );
 }
+
 
 /* ---------- Playlist Generator (form + results) ---------- */
 function PlaylistGenerator() {
