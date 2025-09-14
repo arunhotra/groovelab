@@ -35,7 +35,7 @@ function Home() {
       <motion.img
         src="/groovelab-logo.png"
         alt="GrooveLab"
-        className="w-24 h-24 object-contain drop-shadow-xl"
+        className="w-40 h-16 object-contain drop-shadow-xl"
         initial={{ opacity: 0, x: -50 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.8 }}
