@@ -20,10 +20,17 @@
   left: 0;
 }
 
+.pixelated-image-card__default {
+  z-index: 1;
+  transition: opacity 0.25s ease;
+}
+
 .pixelated-image-card__active {
   z-index: 2;
   display: none;
+  opacity: 0;
   pointer-events: none;
+  transition: opacity 0.2s ease;
 }
 
 .pixelated-image-card__pixels {

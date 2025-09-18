@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { gsap } from "gsap";
 import "./pixel-transition.css";
 
@@ -12,9 +12,11 @@ function PixelTransition({
   style = {},
   aspectRatio = "100%",
 }) {
+  const defaultRef = useRef(null);
   const pixelGridRef = useRef(null);
   const activeRef = useRef(null);
   const delayedCallRef = useRef(null);
+  const isActiveRef = useRef(false);
   const [isActive, setIsActive] = useState(false);
 
   const isTouchDevice = useMemo(() => {
@@ -68,63 +70,101 @@ function PixelTransition({
     };
   }, []);
 
-  const animatePixels = (activate) => {
-    setIsActive(activate);
+  const animatePixels = useCallback(
+    (activate) => {
+      isActiveRef.current = activate;
+      setIsActive(activate);
 
-    const pixelGridEl = pixelGridRef.current;
-    const activeEl = activeRef.current;
-    if (!pixelGridEl || !activeEl) return;
+      const defaultEl = defaultRef.current;
+      const pixelGridEl = pixelGridRef.current;
+      const activeEl = activeRef.current;
+      if (!pixelGridEl || !activeEl) return;
 
-    const pixels = pixelGridEl.querySelectorAll(".pixelated-image-card__pixel");
-    if (!pixels.length) return;
+      const pixels = pixelGridEl.querySelectorAll(".pixelated-image-card__pixel");
+      if (!pixels.length) return;
 
-    gsap.killTweensOf(pixels);
-    if (delayedCallRef.current) {
-      delayedCallRef.current.kill();
-    }
+      gsap.killTweensOf([pixels, defaultEl, activeEl]);
+      if (delayedCallRef.current) {
+        delayedCallRef.current.kill();
+      }
 
-    gsap.set(pixels, { display: "none" });
+      gsap.set(pixels, { display: "none", opacity: 0 });
 
-    const totalPixels = pixels.length;
-    const staggerDuration = animationStepDuration / totalPixels;
+      const totalPixels = pixels.length;
+      const staggerDuration = animationStepDuration / totalPixels;
 
-    gsap.to(pixels, {
-      display: "block",
-      duration: 0,
-      stagger: {
-        each: staggerDuration,
-        from: "random",
-      },
-    });
+      gsap.to(pixels, {
+        display: "block",
+        opacity: 1,
+        duration: 0,
+        stagger: {
+          each: staggerDuration,
+          from: activate ? "random" : "end",
+        },
+      });
 
-    delayedCallRef.current = gsap.delayedCall(animationStepDuration, () => {
-      activeEl.style.display = activate ? "block" : "none";
-      activeEl.style.pointerEvents = activate ? "auto" : "none";
-    });
+      if (defaultEl) {
+        gsap.killTweensOf(defaultEl);
+        gsap.to(defaultEl, {
+          opacity: activate ? 0 : 1,
+          duration: 0.22,
+          ease: "power2.out",
+          delay: activate ? 0 : animationStepDuration,
+        });
+      }
 
-    gsap.to(pixels, {
-      display: "none",
-      duration: 0,
-      delay: animationStepDuration,
-      stagger: {
-        each: staggerDuration,
-        from: "random",
-      },
-      onComplete: () => {
-        if (!activate) {
-          activeEl.style.display = "none";
-          activeEl.style.pointerEvents = "none";
+      delayedCallRef.current = gsap.delayedCall(animationStepDuration, () => {
+        activeEl.style.display = activate ? "block" : "none";
+        activeEl.style.pointerEvents = activate ? "auto" : "none";
+        if (defaultEl) {
+          defaultEl.style.pointerEvents = activate ? "none" : "";
         }
-      },
-    });
-  };
+      });
+
+      if (activate) {
+        gsap.set(activeEl, { opacity: 0, display: "block" });
+        gsap.to(activeEl, {
+          opacity: 1,
+          duration: 0.3,
+          ease: "power2.out",
+          delay: animationStepDuration * 0.6,
+        });
+      } else {
+        gsap.to(activeEl, {
+          opacity: 0,
+          duration: 0.2,
+          ease: "power2.out",
+          onComplete: () => {
+            activeEl.style.display = "none";
+            activeEl.style.pointerEvents = "none";
+          },
+        });
+      }
+
+      gsap.to(pixels, {
+        opacity: 0,
+        duration: 0,
+        delay: animationStepDuration,
+        stagger: {
+          each: staggerDuration,
+          from: "random",
+        },
+        onComplete: () => {
+          if (!activate && defaultEl) {
+            defaultEl.style.pointerEvents = "";
+          }
+        },
+      });
+    },
+    [animationStepDuration]
+  );
 
   const handleMouseEnter = () => {
-    if (!isActive) animatePixels(true);
+    if (!isActiveRef.current) animatePixels(true);
   };
 
   const handleMouseLeave = () => {
-    if (isActive) animatePixels(false);
+    if (isActiveRef.current) animatePixels(false);
   };
 
   const handleClick = () => {
@@ -140,7 +180,9 @@ function PixelTransition({
       onClick={isTouchDevice ? handleClick : undefined}
     >
       <div style={{ paddingTop: aspectRatio }} />
-      <div className="pixelated-image-card__default">{firstContent}</div>
+      <div className="pixelated-image-card__default" ref={defaultRef}>
+        {firstContent}
+      </div>
       <div className="pixelated-image-card__active" ref={activeRef}>
         {secondContent}
       </div>
