@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { Music, Brain, Activity } from "lucide-react";
+import PlaylistCard from "@/components/PlaylistCard";
 
 /* ---------- Home (side-by-side hero) ---------- */
 function Home() {
@@ -116,66 +117,64 @@ function PlaylistGenerator() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-100 via-gray-50 to-white p-8">
-      <div className="max-w-5xl mx-auto">
-        <h2 className="text-4xl font-extrabold mb-8 text-indigo-700">
-          🎶 Mood-Based Playlist Generator
-        </h2>
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-black py-16 px-6 text-slate-100">
+      <div className="mx-auto flex max-w-6xl flex-col gap-12">
+        <header className="space-y-4">
+          <p className="text-sm uppercase tracking-[0.35em] text-emerald-300/80">GrooveLab Labs</p>
+          <h2 className="text-4xl font-extrabold text-white md:text-5xl">
+            Pixelated Playlist Portal
+          </h2>
+          <p className="max-w-3xl text-base text-slate-300">
+            Describe the vibe you're craving and watch Spotify curations assemble through a retro-futuristic pixel reveal.
+          </p>
+        </header>
 
-        <form onSubmit={handleSubmit} className="mb-8 flex gap-3">
-          <input
-            type="text"
-            value={mood}
-            onChange={(e) => setMood(e.target.value)}
-            placeholder="Enter a vibe (e.g. sunset drive, chill focus)"
-            className="flex-1 border rounded-lg px-4 py-2 shadow-sm"
-          />
-          <button className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 shadow">
-            Search
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-4 rounded-3xl border border-slate-800/60 bg-slate-900/60 p-6 shadow-xl shadow-emerald-500/10 backdrop-blur md:flex-row"
+        >
+          <label className="flex-1">
+            <span className="sr-only">Describe a mood</span>
+            <input
+              type="text"
+              value={mood}
+              onChange={(e) => setMood(e.target.value)}
+              placeholder="e.g. neon nights, cozy focus, rooftop sunrise"
+              className="w-full rounded-2xl border border-slate-700/60 bg-slate-950/70 px-5 py-3 text-base text-slate-100 placeholder:text-slate-500 focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/60"
+            />
+          </label>
+          <button
+            type="submit"
+            className="flex items-center justify-center rounded-2xl bg-emerald-500 px-6 py-3 text-base font-semibold text-slate-950 shadow-lg shadow-emerald-500/30 transition hover:bg-emerald-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300"
+          >
+            Reveal Playlists
           </button>
         </form>
 
-        {loading && <p className="text-gray-600">Loading playlists...</p>}
-        {error && <p className="text-red-600">{error}</p>}
+        {loading ? (
+          <p className="text-sm text-emerald-300">
+            Translating your vibe into curated pixels...
+          </p>
+        ) : null}
+        {error ? <p className="text-sm text-rose-400">{error}</p> : null}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {playlists.map((p) => (
+        {!loading && !error && playlists.length === 0 ? (
+          <div className="rounded-3xl border border-dashed border-slate-800/70 bg-slate-900/40 p-10 text-center text-sm text-slate-400">
+            Try prompts like "after-hours jazz bar" or "cyberpunk study session" to receive playlists.
+          </div>
+        ) : null}
+
+        <div className="grid gap-8 sm:grid-cols-2 xl:grid-cols-3">
+          {playlists.map((playlist, idx) => (
             <motion.div
-              key={p.id}
-              whileHover={{ scale: 1.03 }}
-              className="rounded-xl shadow-lg bg-white overflow-hidden"
+              key={playlist.id || idx}
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: idx * 0.05 }}
+              whileHover={{ scale: 1.02 }}
+              className="w-full"
             >
-              <div className="relative group h-60">
-                {p.images?.[0]?.url && (
-                  <img
-                    src={p.images[0].url}
-                    alt={p.name}
-                    className="w-full h-full object-cover"
-                  />
-                )}
-                <a
-                  href={p.external_urls?.spotify}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition"
-                >
-                  <span className="bg-green-500 text-white px-5 py-2 rounded-full shadow-lg">
-                    ▶ Play on Spotify
-                  </span>
-                </a>
-              </div>
-              <div className="p-5">
-                <h3 className="font-bold text-lg">{p.name}</h3>
-                <p className="text-sm text-gray-600">
-                  By {p.owner?.display_name || "Unknown"}
-                </p>
-                {p.tracks?.total ? (
-                  <p className="text-xs text-gray-500 mt-1">{p.tracks.total} tracks</p>
-                ) : null}
-                {p.description ? (
-                  <p className="text-sm text-gray-700 mt-2 line-clamp-2">{p.description}</p>
-                ) : null}
-              </div>
+              <PlaylistCard playlist={playlist} />
             </motion.div>
           ))}
         </div>
