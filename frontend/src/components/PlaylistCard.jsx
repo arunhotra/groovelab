@@ -32,8 +32,8 @@ function PlaylistCard({ playlist }) {
   const gradientClasses = gradientPalette[gradientIndex];
 
   const firstContent = (
-    <div className="relative flex h-full w-full flex-col overflow-hidden">
-      <div className="absolute inset-0">
+    <div className="flex h-full w-full flex-col overflow-hidden rounded-[inherit] bg-slate-950/40">
+      <div className="relative flex-1">
         {coverUrl ? (
           <>
             <img
@@ -42,59 +42,49 @@ function PlaylistCard({ playlist }) {
               className="h-full w-full object-cover"
               loading="lazy"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/60 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent" />
           </>
         ) : (
           <div className={`absolute inset-0 bg-gradient-to-br ${gradientClasses}`} />
         )}
       </div>
-      <div className="relative z-10 mt-auto flex flex-col gap-2 p-5">
-        <span className="text-xs uppercase tracking-[0.3em] text-white/60">Playlist</span>
-        <h3 className="text-2xl font-semibold text-white drop-shadow-lg">{playlist.name}</h3>
-        <p className="text-sm text-white/70">Crafted by {owner}</p>
+      <div className="flex flex-col gap-2 p-5 text-slate-100">
+        <span className="text-xs uppercase tracking-[0.35em] text-emerald-300/80">Playlist</span>
+        <h3 className="text-lg font-semibold leading-tight text-white line-clamp-2">{playlist.name}</h3>
+        <p className="text-sm text-slate-300">By {owner}</p>
+        {trackCount ? <p className="text-xs text-slate-500">{trackCount} tracks</p> : null}
+        {playlist.description ? (
+          <p className="text-sm text-slate-400 line-clamp-2">{playlist.description}</p>
+        ) : null}
       </div>
     </div>
   );
 
   const secondContent = (
-    <div className="flex h-full w-full flex-col justify-between gap-6 bg-slate-950/90 p-6 text-slate-100 backdrop-blur-sm">
-      <div className="space-y-3">
-        <div>
-          <p className="text-xs uppercase tracking-[0.35em] text-emerald-300/80">GrooveLab</p>
-          <h3 className="mt-2 text-xl font-semibold leading-tight text-white">{playlist.name}</h3>
-        </div>
-        {playlist.description ? (
-          <p className="text-sm text-slate-300 line-clamp-4">{playlist.description}</p>
-        ) : (
-          <p className="text-sm text-slate-400">
-            Curated energies, BPM streaks, and moods matched to your vibe.
-          </p>
-        )}
+    <div className="flex h-full w-full flex-col items-center justify-center gap-6 bg-slate-950/95 p-6 text-center text-slate-100 backdrop-blur-sm">
+      <div className="space-y-2">
+        <p className="text-xs uppercase tracking-[0.4em] text-emerald-300/80">Ready to spin</p>
+        <h3 className="text-xl font-semibold leading-tight text-white">{playlist.name}</h3>
+        {followers ? <p className="text-sm text-slate-400">{followers}</p> : null}
       </div>
-      <div className="flex items-center justify-between gap-4 text-sm text-slate-300">
-        <div className="space-y-1">
-          {trackCount ? <p>{trackCount} tracks</p> : null}
-          {followers ? <p className="text-slate-500">{followers}</p> : null}
-        </div>
-        <a
-          href={playlist?.external_urls?.spotify}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 rounded-full bg-emerald-400/90 px-4 py-2 font-semibold text-slate-950 shadow-lg transition hover:bg-emerald-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300"
-        >
-          Play on Spotify
-        </a>
-      </div>
+      <a
+        href={playlist?.external_urls?.spotify}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center gap-2 rounded-full bg-emerald-400/90 px-6 py-3 font-semibold text-slate-950 shadow-lg transition hover:bg-emerald-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300"
+      >
+        Play on Spotify
+      </a>
     </div>
   );
 
   return (
     <PixelTransition
       className="group"
-      aspectRatio="125%"
-      pixelColor="rgba(16, 185, 129, 0.9)"
-      gridSize={10}
-      animationStepDuration={0.45}
+      aspectRatio="140%"
+      pixelColor="rgba(16, 185, 129, 0.85)"
+      gridSize={9}
+      animationStepDuration={0.5}
       firstContent={firstContent}
       secondContent={secondContent}
     />
